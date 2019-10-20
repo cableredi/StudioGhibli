@@ -64,6 +64,11 @@ header h1 {
   color: red;
 }
 
+.films img {
+  height: 20%;
+  width: 20%;
+}
+
 
 /* footer */
 footer {
