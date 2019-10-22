@@ -1,5 +1,8 @@
 "use strict"
 
+/*****************
+ * Format API parameters for call
+ *****************/
 function formatQueryParams(params) {
   console.log('Entering formatQueryParams');
 
@@ -8,6 +11,9 @@ function formatQueryParams(params) {
   return queryItems.join('&');
 }
 
+/*****************
+ * Build STORE films with Studio Ghibli API film responses
+ *****************/
 function buildStoreGhibliFilm(responseJson) {
   console.log('Entering buildStoreGhibliFilm');
 
@@ -30,6 +36,9 @@ function buildStoreGhibliFilm(responseJson) {
   getMovieDbFilms();
 }
 
+/*****************
+ * Build STORE films with Movie DB API film responses
+ *****************/
 function buildStoreMovieDb(responseJson) {
   console.log('Entering buildStoreMovieDb');
 
@@ -44,13 +53,55 @@ function buildStoreMovieDb(responseJson) {
       STORE.films[result].backdrop_path = responseJson.results[i].backdrop_path;
       STORE.films[result].original_title = responseJson.results[i].original_title;
       STORE.films[result].release_date = responseJson.results[i].release_date;
+      STORE.films[result].homepage = responseJson.results[i].homepage;
+      STORE.films[result].backdrops = [];
+      STORE.films[result].posters = [];
+
     } 
   }
 
   displayResultsHome();
 }
 
-function displayResultsHome(responseJson) {
+/*****************
+ * Build STORE films with Movie DB API individual film responses
+ *****************/
+function buildStoreMovieDbDetails(responseJson) {
+  console.log('Entering buildStoreMovieDbDetails');
+
+  let backdrop = '';
+  let poster = '';
+
+  for (let i = 0; i < responseJson.images.backdrops.length; i++) {
+    backdrop = {
+      file_path: responseJson.images.backdrops[i].file_path,
+      height: responseJson.images.backdrops[i].height,
+      width: responseJson.images.backdrops[i].width
+    };
+
+    STORE.films[STORE.filmIndexClicked].backdrops.push(backdrop);
+  };
+
+  for (let i = 0; i < responseJson.images.posters.length; i++) {
+    poster = {
+      file_path: responseJson.images.posters[i].file_path,
+      height: responseJson.images.posters[i].height,
+      width: responseJson.images.posters[i].width
+    };
+
+    STORE.films[STORE.filmIndexClicked].posters.push(poster);
+  };
+
+  STORE.films[STORE.filmIndexClicked].tagline = responseJson.tagline;
+  console.log('kim tagline: ' + STORE.films[STORE.filmIndexClicked].tagline);
+
+  displayResultsDetails();
+}
+
+/*****************
+ * Display Home Page
+ *****************/
+function displayResultsHome() {
   console.log('Entering displayResultsHome');
 
   $('#js-films').empty();
@@ -71,14 +122,17 @@ function displayResultsHome(responseJson) {
           <h2>${STORE.films[i].title}</h2>
           <p>${STORE.films[i].description}</p>
         </div>
-        <button class="moreInfo-button js-moreInfo-button" type="button" value=${STORE.films[i].id}>More Info</button>
+        <button class="moreInfo-button js-moreInfo-button" type="button" id='${STORE.films[i].id}'>More Info</button>
       </div>
       `
     )
   }
 }
 
-function displayResultsDetails(responseJson) {
+/*****************
+ * Display Details Page
+ *****************/
+function displayResultsDetails() {
   console.log('Entering displayResultsDetails');
 
   $('#js-film-details').empty();
@@ -92,42 +146,55 @@ function displayResultsDetails(responseJson) {
     imageURL = `<img class="details-filmPoster" src=${url} alt=${STORE.films[STORE.filmIndexClicked].title} />`;
   }
 
+  let backdropsList = '';
+  for (let i = 0; i < STORE.films[STORE.filmIndexClicked].backdrops.length; i++) {
+    backdropsList += `<li>${STORE.films[STORE.filmIndexClicked].backdrops[i].file_path}</li>`;
+  }
+
+  let postersList = '';
+  for (let i = 0; i < STORE.films[STORE.filmIndexClicked].posters.length; i++) {
+    postersList += `<li>${STORE.films[STORE.filmIndexClicked].posters[i].file_path}</li>`;
+  }
+
   $('#js-film-details').append(`
       ${imageURL}
       <div class="details-information">
         <h2>${STORE.films[STORE.filmIndexClicked].title}</h2>
+        <p>Tagline: ${STORE.films[STORE.filmIndexClicked].tagline}</p>
         <p>${STORE.films[STORE.filmIndexClicked].description}</p>
         <p>Release Date: ${STORE.films[STORE.filmIndexClicked].release_date}</p>
+        <p>Original Title: ${STORE.films[STORE.filmIndexClicked].original_title}</p>
         <p>Rotten Tomatoes Score: ${STORE.films[STORE.filmIndexClicked].rt_score}</p>
       </div>
-  `);
-
-  
+      <div>
+        <h2>Backdrops</h2>
+        <ul>${backdropsList}</ul>
+      </div>
+      <div>
+        <h2>Posters</h2>
+        <ul>${postersList}</ul>
+      </div>
+  `); 
 }
 
-/* here is where Im trying to get the actual button that was clicked */
+/*****************
+ * Handle user clicking More info button on Home Page
+ *****************/
 function handleMoreInfoClicked() {
   console.log('Entering handleMoreInfoClicked');
 
   $('#js-films').on('click', '.js-moreInfo-button', event => {
     console.log('Clicked More Info');
 
-    let allClickedButtons = document.getElementsByClassName('js-moreInfo-button');
-    allClickedButtons = Array.from(allClickedButtons);
+    STORE.filmIndexClicked = STORE.films.findIndex(p => p.id === event.target.id)
 
-    /*
-    let result = allClickedButtons.map(clickedButton => {
-      return STORE.films.findIndex(p => p.id === clickedButton.value)
-    });
-
-    */
-
-  console.log('kim: ' + result);
-
-    getStudioGhibiliPeople();
+    getMovieDbFilmDetails();
   });
 }
 
+/*****************
+ * Studio Ghibili Films API
+ *****************/
 function getStudioGhibliFilms() {
   console.log('Entering getStudioGhibiliFilms');
 
@@ -146,6 +213,9 @@ function getStudioGhibliFilms() {
   });
 }
 
+/*****************
+ * The Movie DB get all Films with Title API
+ *****************/
 function getMovieDbFilms() {
   console.log('Entering getMovieDbFilms');
 
@@ -174,25 +244,39 @@ function getMovieDbFilms() {
   }
 }
 
-function getStudioGhibiliPeople() {
-  console.log('Entering getStudioGhibiliPeople');
+/*****************
+ * The Movie DB get Film Title Detail information
+ *****************/
+function getMovieDbFilmDetails() {
+  console.log('Entering getMovieDbFilmDetails');
+    const movieDbId = STORE.films[STORE.filmIndexClicked].movieDbId;
 
-  const url = STORE.studioGhibliApi + '/people';
+    let params =  {
+      api_key: STORE.theMovieDBApiKey,
+      language: 'en-US',
+      append_to_response: 'images',
+      include_image_language: 'en,null'
+    };
 
-  fetch(url)
-  .then (response => {
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error(response.statusText);
-  }) 
-  .then (responseJson => displayResultsDetails(responseJson))
-  .catch(err => {
-    $('#js-error-message').text(`Error getting Studio Ghibi people: ${err.message}`);
-  });
+    let queryString = formatQueryParams(params);
+    let url = STORE.theMovieDBApi + 'movie/' + movieDbId + '?' + queryString;
+
+    fetch(url)
+    .then (response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(response.statusText);
+    }) 
+    .then (responseJson => buildStoreMovieDbDetails(responseJson))
+    .catch(err => {
+      $('#js-error-message').text(`Error getting The Movie Database films: ${err.message}`);
+    });
 }
 
-
+/*****************
+ * Initial Loading of Page
+ *****************/
 function loadPage() {
   console.log('Entering loadPage');
 
