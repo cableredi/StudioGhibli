@@ -1,4 +1,5 @@
 const STORE = {
+  filmIndexClicked: '',
   studioGhibliApi: 'https://ghibliapi.herokuapp.com',
   theMovieDBApi: 'https://api.themoviedb.org/3/',
   theMovieDBApiKey: 'a609b5f5061ca98b9c1aa7c216a01d10',

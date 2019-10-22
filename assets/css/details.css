@@ -1,0 +1,22 @@
+.film-details {
+  padding: 20px;
+}
+
+#js-film-details {
+  display: none;
+}
+
+.details-filmPoster {
+  display: inline-block;
+  width: 300px;
+  height: auto;
+}
+
+.details-information {
+  margin-left: 20px;
+  display: inline-block;
+}
+
+.film-details-people {
+  margin: 20px;
+}

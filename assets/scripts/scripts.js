@@ -8,8 +8,8 @@ function formatQueryParams(params) {
   return queryItems.join('&');
 }
 
-function buildGhibliFilm(responseJson) {
-  console.log('Entering buildGhibliFilm');
+function buildStoreGhibliFilm(responseJson) {
+  console.log('Entering buildStoreGhibliFilm');
 
   for (let i = 0; i < responseJson.length; i++) {
     let film = {
@@ -30,8 +30,8 @@ function buildGhibliFilm(responseJson) {
   getMovieDbFilms();
 }
 
-function buildMovieDb(responseJson) {
-  console.log('Entering buildMovieDb');
+function buildStoreMovieDb(responseJson) {
+  console.log('Entering buildStoreMovieDb');
 
   for (let i = 0; i < responseJson.results.length; i++) {
     let result = STORE.films.findIndex(p => 
@@ -71,11 +71,61 @@ function displayResultsHome(responseJson) {
           <h2>${STORE.films[i].title}</h2>
           <p>${STORE.films[i].description}</p>
         </div>
-        <button type="button">More Info</button>
+        <button class="moreInfo-button js-moreInfo-button" type="button" value=${STORE.films[i].id}>More Info</button>
       </div>
       `
     )
   }
+}
+
+function displayResultsDetails(responseJson) {
+  console.log('Entering displayResultsDetails');
+
+  $('#js-film-details').empty();
+  $('#js-films').toggle();
+  $('#js-film-details').toggle();
+
+  let imageURL = '<div><i class="far fa-image"></i></div>';
+
+  if (STORE.films[STORE.filmIndexClicked].poster_path > '') {
+    let url = STORE.theMovieDBImageBase_url + STORE.theMovieDBImagePoster_size + STORE.films[STORE.filmIndexClicked].poster_path;
+    imageURL = `<img class="details-filmPoster" src=${url} alt=${STORE.films[STORE.filmIndexClicked].title} />`;
+  }
+
+  $('#js-film-details').append(`
+      ${imageURL}
+      <div class="details-information">
+        <h2>${STORE.films[STORE.filmIndexClicked].title}</h2>
+        <p>${STORE.films[STORE.filmIndexClicked].description}</p>
+        <p>Release Date: ${STORE.films[STORE.filmIndexClicked].release_date}</p>
+        <p>Rotten Tomatoes Score: ${STORE.films[STORE.filmIndexClicked].rt_score}</p>
+      </div>
+  `);
+
+  
+}
+
+/* here is where Im trying to get the actual button that was clicked */
+function handleMoreInfoClicked() {
+  console.log('Entering handleMoreInfoClicked');
+
+  $('#js-films').on('click', '.js-moreInfo-button', event => {
+    console.log('Clicked More Info');
+
+    let allClickedButtons = document.getElementsByClassName('js-moreInfo-button');
+    allClickedButtons = Array.from(allClickedButtons);
+
+    /*
+    let result = allClickedButtons.map(clickedButton => {
+      return STORE.films.findIndex(p => p.id === clickedButton.value)
+    });
+
+    */
+
+  console.log('kim: ' + result);
+
+    getStudioGhibiliPeople();
+  });
 }
 
 function getStudioGhibliFilms() {
@@ -90,7 +140,7 @@ function getStudioGhibliFilms() {
     }
     throw new Error(response.statusText);
   }) 
-  .then (responseJson => buildGhibliFilm(responseJson))
+  .then (responseJson => buildStoreGhibliFilm(responseJson))
   .catch(err => {
     $('#js-error-message').text(`Error getting Studio Ghibi films: ${err.message}`);
   });
@@ -117,11 +167,29 @@ function getMovieDbFilms() {
       }
       throw new Error(response.statusText);
     }) 
-    .then (responseJson => buildMovieDb(responseJson))
+    .then (responseJson => buildStoreMovieDb(responseJson))
     .catch(err => {
       $('#js-error-message').text(`Error getting The Movie Database films: ${err.message}`);
     });
   }
+}
+
+function getStudioGhibiliPeople() {
+  console.log('Entering getStudioGhibiliPeople');
+
+  const url = STORE.studioGhibliApi + '/people';
+
+  fetch(url)
+  .then (response => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error(response.statusText);
+  }) 
+  .then (responseJson => displayResultsDetails(responseJson))
+  .catch(err => {
+    $('#js-error-message').text(`Error getting Studio Ghibi people: ${err.message}`);
+  });
 }
 
 
@@ -132,7 +200,7 @@ function loadPage() {
   document.getElementById("year").innerHTML = new Date().getFullYear();
 
   getStudioGhibliFilms();
-
+  handleMoreInfoClicked()
 }
 
 loadPage();

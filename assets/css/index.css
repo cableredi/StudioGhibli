@@ -59,8 +59,8 @@ header h1 {
   width: 250px;
 }
 
-.noImageAvail {
-  font-size: 50px;
+.fa-image {
+  font-size: 100px;
   color: red;
 }
 
