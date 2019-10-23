@@ -167,6 +167,9 @@ function displayResultsDetails() {
         <p>Rotten Tomatoes Score: ${STORE.films[STORE.filmIndexClicked].rt_score}</p>
       </div>
       <div>
+      <button class="back-button" type="button" onClick="window.location.reload();">Back to Film List</button>
+      </div>
+      <div>
         <h2>Backdrops</h2>
         <ul>${backdropsList}</ul>
       </div>
