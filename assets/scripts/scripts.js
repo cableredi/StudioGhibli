@@ -93,7 +93,6 @@ function buildStoreMovieDbDetails(responseJson) {
   };
 
   STORE.films[STORE.filmIndexClicked].tagline = responseJson.tagline;
-  console.log('kim tagline: ' + STORE.films[STORE.filmIndexClicked].tagline);
 
   displayResultsDetails();
 }
@@ -108,10 +107,12 @@ function displayResultsHome() {
 
   for (let i = 0; i < STORE.films.length; i++) {
     let imageURL = '<div><i class="far fa-image"></i></div>';
+    let moreButton = '';
     
     if (STORE.films[i].poster_path > '') {
       let url = STORE.theMovieDBImageBase_url + STORE.theMovieDBImagePoster_size + STORE.films[i].poster_path;
       imageURL = `<img class='filmPoster' src=${url} alt=${STORE.films[i].title} />`;
+      moreButton = `<button class="moreInfo-button js-moreInfo-button" type="button" id='${STORE.films[i].id}'>More Info</button>`;
     }
 
     $('#js-films').append(
@@ -122,7 +123,7 @@ function displayResultsHome() {
           <h2>${STORE.films[i].title}</h2>
           <p>${STORE.films[i].description}</p>
         </div>
-        <button class="moreInfo-button js-moreInfo-button" type="button" id='${STORE.films[i].id}'>More Info</button>
+        ${moreButton}
       </div>
       `
     )
@@ -143,39 +144,47 @@ function displayResultsDetails() {
 
   if (STORE.films[STORE.filmIndexClicked].poster_path > '') {
     let url = STORE.theMovieDBImageBase_url + STORE.theMovieDBImagePoster_size + STORE.films[STORE.filmIndexClicked].poster_path;
-    imageURL = `<img class="details-filmPoster" src=${url} alt=${STORE.films[STORE.filmIndexClicked].title} />`;
+    imageURL = `<img class="details-filmPoster" src=${url} alt='${STORE.films[STORE.filmIndexClicked].title}' />`;
   }
 
   let backdropsList = '';
+  let backdropsUrl = ''; 
   for (let i = 0; i < STORE.films[STORE.filmIndexClicked].backdrops.length; i++) {
-    backdropsList += `<li>${STORE.films[STORE.filmIndexClicked].backdrops[i].file_path}</li>`;
+    backdropsUrl = STORE.theMovieDBImageBase_url + STORE.theMovieDBImageBackdrop_size + STORE.films[STORE.filmIndexClicked].backdrops[i].file_path;
+    backdropsList += `<li><img class="details-backdrop-img" src=${backdropsUrl} alt='${STORE.films[STORE.filmIndexClicked].title} - Backdrop image' /></li>`;
   }
 
   let postersList = '';
+  let postersUrl = ''
   for (let i = 0; i < STORE.films[STORE.filmIndexClicked].posters.length; i++) {
-    postersList += `<li>${STORE.films[STORE.filmIndexClicked].posters[i].file_path}</li>`;
+    postersUrl = STORE.theMovieDBImageBase_url + STORE.theMovieDBImageBackdrop_size + STORE.films[STORE.filmIndexClicked].posters[i].file_path
+    postersList += `<li><img class="details-posters-img" src=${postersUrl} alt='${STORE.films[STORE.filmIndexClicked].title} - Poster Image' /></li>`;
   }
 
   $('#js-film-details').append(`
-      ${imageURL}
-      <div class="details-information">
-        <h2>${STORE.films[STORE.filmIndexClicked].title}</h2>
-        <p>Tagline: ${STORE.films[STORE.filmIndexClicked].tagline}</p>
-        <p>${STORE.films[STORE.filmIndexClicked].description}</p>
-        <p>Release Date: ${STORE.films[STORE.filmIndexClicked].release_date}</p>
-        <p>Original Title: ${STORE.films[STORE.filmIndexClicked].original_title}</p>
-        <p>Rotten Tomatoes Score: ${STORE.films[STORE.filmIndexClicked].rt_score}</p>
-      </div>
-      <div>
-      <button class="back-button" type="button" onClick="window.location.reload();">Back to Film List</button>
-      </div>
+      <ul class="details-top">
+        <li>${imageURL}</li>
+        <li>
+          <div class="details-information">
+            <h2>${STORE.films[STORE.filmIndexClicked].title}</h2>
+            <p><span class="bold">Tagline: </span>${STORE.films[STORE.filmIndexClicked].tagline}</p>
+            <p><span class="bold">Description: </span>${STORE.films[STORE.filmIndexClicked].description}</p>
+            <p><span class="bold">Release Date: </span>${STORE.films[STORE.filmIndexClicked].release_date}</p>
+            <p><span class="bold">Original Title: </span>${STORE.films[STORE.filmIndexClicked].original_title}</p>
+            <p><span class="bold">Rotten Tomatoes Score: </span>${STORE.films[STORE.filmIndexClicked].rt_score}</p>
+            <div class="back-to-home-btn">
+              <button class="back-button" type="button" onClick="window.location.reload();">Back to Film List</button>
+            </div>
+          </div>
+        </li>
+      </ul>
       <div>
         <h2>Backdrops</h2>
-        <ul>${backdropsList}</ul>
+        <ul class="details-backdrops">${backdropsList}</ul>
       </div>
       <div>
         <h2>Posters</h2>
-        <ul>${postersList}</ul>
+        <ul class="details-posters">${postersList}</ul>
       </div>
   `); 
 }
