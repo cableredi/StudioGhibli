@@ -116,6 +116,7 @@ button:hover {
   -webkit-box-direction: normal;
       -ms-flex-flow: column;
           flex-flow: column;
+  max-width: 1000px;
 }
 
 .film {
@@ -170,7 +171,8 @@ button:hover {
   -ms-border-radius: 4px;
 }
 
-.moreInfo-button:hover {
+.moreInfo-button:hover,
+.moreInfo-button:focus {
   border: 1px solid;
   -webkit-box-shadow: inset 0 0 20px rgba(72, 61, 139, 0.5), 0 0 20px rgba(72, 61, 139, 0.2);
           box-shadow: inset 0 0 20px rgba(72, 61, 139, 0.5), 0 0 20px rgba(72, 61, 139, 0.2);
@@ -276,7 +278,8 @@ button:hover {
   -ms-border-radius: 4px;
 }
 
-.back-button:hover {
+.back-button:hover,
+.back-button:focus {
   border: 1px solid;
   -webkit-box-shadow: inset 0 0 20px rgba(72, 61, 139, 0.5), 0 0 20px rgba(72, 61, 139, 0.2);
           box-shadow: inset 0 0 20px rgba(72, 61, 139, 0.5), 0 0 20px rgba(72, 61, 139, 0.2);
