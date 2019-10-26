@@ -24,10 +24,8 @@ function buildStoreGhibliFilm(responseJson) {
       description: responseJson[i].description,
       rt_score: responseJson[i].rt_score,
       release_date: responseJson[i].release_date,
-      locations: responseJson[i].locations,
-      people: responseJson[i].people,
-      species: responseJson[i].species,
-      vehicles: responseJson[i].vehicles
+      director: responseJson[i].director,
+      producer: responseJson[i].producer
     }
 
     STORE.films.push(film);
@@ -106,7 +104,7 @@ function displayResultsHome() {
   $('#js-films').empty();
 
   for (let i = 0; i < STORE.films.length; i++) {
-    let imageURL = '<div><i class="far fa-image"></i></div>';
+    let imageURL = '<div class="filmPoster"><i class="far fa-image"></i></div>';
     let moreButton = '';
     
     if (STORE.films[i].poster_path > '') {
@@ -122,8 +120,8 @@ function displayResultsHome() {
         <div class='filmText'>
           <h2>${STORE.films[i].title}</h2>
           <p>${STORE.films[i].description}</p>
+          ${moreButton}
         </div>
-        ${moreButton}
       </div>
       `
     )
@@ -151,14 +149,14 @@ function displayResultsDetails() {
   let backdropsUrl = ''; 
   for (let i = 0; i < STORE.films[STORE.filmIndexClicked].backdrops.length; i++) {
     backdropsUrl = STORE.theMovieDBImageBase_url + STORE.theMovieDBImageBackdrop_size + STORE.films[STORE.filmIndexClicked].backdrops[i].file_path;
-    backdropsList += `<li><img class="details-backdrop-img" src=${backdropsUrl} alt='${STORE.films[STORE.filmIndexClicked].title} - Backdrop image' /></li>`;
+    backdropsList += `<div><img class="details-backdrop-img" src=${backdropsUrl} alt='${STORE.films[STORE.filmIndexClicked].title} - Backdrop image' /></div>`;
   }
 
   let postersList = '';
   let postersUrl = ''
   for (let i = 0; i < STORE.films[STORE.filmIndexClicked].posters.length; i++) {
     postersUrl = STORE.theMovieDBImageBase_url + STORE.theMovieDBImageBackdrop_size + STORE.films[STORE.filmIndexClicked].posters[i].file_path
-    postersList += `<li><img class="details-posters-img" src=${postersUrl} alt='${STORE.films[STORE.filmIndexClicked].title} - Poster Image' /></li>`;
+    postersList += `<div><img class="details-posters-img" src=${postersUrl} alt='${STORE.films[STORE.filmIndexClicked].title} - Poster Image' /></div>`;
   }
 
   $('#js-film-details').append(`
@@ -167,26 +165,39 @@ function displayResultsDetails() {
         <li>
           <div class="details-information">
             <h2>${STORE.films[STORE.filmIndexClicked].title}</h2>
-            <p><span class="bold">Tagline: </span>${STORE.films[STORE.filmIndexClicked].tagline}</p>
-            <p><span class="bold">Description: </span>${STORE.films[STORE.filmIndexClicked].description}</p>
-            <p><span class="bold">Release Date: </span>${STORE.films[STORE.filmIndexClicked].release_date}</p>
-            <p><span class="bold">Original Title: </span>${STORE.films[STORE.filmIndexClicked].original_title}</p>
-            <p><span class="bold">Rotten Tomatoes Score: </span>${STORE.films[STORE.filmIndexClicked].rt_score}</p>
-            <div class="back-to-home-btn">
-              <button class="back-button" type="button" onClick="window.location.reload();">Back to Film List</button>
-            </div>
+            <p><span class="header">Tagline: </span>${STORE.films[STORE.filmIndexClicked].tagline}</p>
+            <p><span class="header">Description: </span>${STORE.films[STORE.filmIndexClicked].description}</p>
+            <p><span class="header">Director: </span>${STORE.films[STORE.filmIndexClicked].director}</p>
+            <p><span class="header">Producer: </span>${STORE.films[STORE.filmIndexClicked].producer}</p>
+            <p><span class="header">Release Date: </span>${STORE.films[STORE.filmIndexClicked].release_date}</p>
+            <p><span class="header">Original Title: </span>${STORE.films[STORE.filmIndexClicked].original_title}</p>
+            <p><span class="header">Rotten Tomatoes Score: </span>${STORE.films[STORE.filmIndexClicked].rt_score}</p>
+            <button class="back-button" type="button" onClick="window.location.reload();">Back to Film List</button>
           </div>
         </li>
       </ul>
       <div>
-        <h2>Backdrops</h2>
-        <ul class="details-backdrops">${backdropsList}</ul>
+        <h2>Backdrops:</h2>
+        <div class="details-backdrops">${backdropsList}</div>
       </div>
       <div>
-        <h2>Posters</h2>
-        <ul class="details-posters">${postersList}</ul>
+        <h2>Posters:</h2>
+        <div class="details-posters">${postersList}</div>
       </div>
-  `); 
+  `);  
+  
+  let film_roll = new FilmRoll({
+    configure_load: true,
+    container: '.details-backdrops'
+  });
+
+  let film_roll2 = new FilmRoll({
+    configure_load: true,
+    container: '.details-posters'
+  });
+
+  $("html, body").animate({ scrollTop: 0 }, "fast");
+
 }
 
 /*****************
@@ -296,7 +307,7 @@ function loadPage() {
   document.getElementById("year").innerHTML = new Date().getFullYear();
 
   getStudioGhibliFilms();
-  handleMoreInfoClicked()
+  handleMoreInfoClicked();
 }
 
 loadPage();

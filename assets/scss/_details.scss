@@ -1,0 +1,87 @@
+.film-details {
+  padding: 20px;
+  background-color: $background-color;
+  @include border-radius (4px);
+  margin: 20px;
+  border: 1px solid $black;
+}
+
+.film-details h2 {
+  margin: 50px 0 30px 0;
+}
+
+#js-film-details {
+  display: none;
+}
+
+.details-top {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-around;
+  list-style-type: none;
+}
+
+.details-filmPoster {
+  width: 300px;
+  height: auto;
+  vertical-align: top;
+  border: 1px solid $black;
+}
+
+.details-information {
+  width: auto;
+  margin: 0 50px;
+  vertical-align: top;
+}
+
+.details-information h2 {
+  margin-top: 20px;
+  font-size: 30px;
+}
+
+.details-information p {
+  margin-top: 5px;
+}
+
+.details-backdrops,
+.details-posters {
+  background-color: $headers;
+  padding: 20px;
+  @include border-radius(4px);
+}
+
+.back-button {
+  margin-top: 50px;
+
+  border: 0 solid;
+  box-shadow: inset 0 0 20px rgba(72, 61, 139, 0);
+  outline: 1px solid;
+  outline-color: rgba(72, 61, 139, .5);
+  outline-offset: 0px;
+  text-shadow: none;
+  transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+  @include border-radius(4px);
+} 
+
+.back-button:hover {
+  border: 1px solid;
+  box-shadow: inset 0 0 20px rgba(72, 61, 139, .5), 0 0 20px rgba(72, 61, 139, .2);
+  outline-color: rgba(72, 61, 139, 0);
+  outline-offset: 15px;
+  text-shadow: 1px 1px 2px #427388; 
+  @include border-radius(4px);
+}
+
+@media only screen and (max-width: 800px) {  
+  .details-filmPoster {
+    width: 100px;
+    height: auto;
+    vertical-align: top;
+    border: 1px solid $black;
+  }
+
+  .details-information h2 {
+    font-size: 20px;
+    line-height: 25px;
+  }
+}
