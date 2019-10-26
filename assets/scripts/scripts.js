@@ -50,7 +50,11 @@ function buildStoreMovieDb(responseJson) {
       STORE.films[result].movieDbId = responseJson.results[i].id;
       STORE.films[result].backdrop_path = responseJson.results[i].backdrop_path;
       STORE.films[result].original_title = responseJson.results[i].original_title;
-      STORE.films[result].release_date = responseJson.results[i].release_date;
+
+      let releaseDate = responseJson.results[i].release_date.split('-');
+      releaseDate = releaseDate[1] + '-' + releaseDate[2] + '-' + releaseDate[0];
+
+      STORE.films[result].release_date = releaseDate;
       STORE.films[result].homepage = responseJson.results[i].homepage;
       STORE.films[result].backdrops = [];
       STORE.films[result].posters = [];
@@ -104,7 +108,7 @@ function displayResultsHome() {
   $('#js-films').empty();
 
   for (let i = 0; i < STORE.films.length; i++) {
-    let imageURL = '<div class="filmPoster"><i class="far fa-image"></i></div>';
+    let imageURL = '<div class="filmPosterNoImage"><i class="far fa-image"></i><br />No Poster Available</div>';
     let moreButton = '';
     
     if (STORE.films[i].poster_path > '') {
@@ -147,14 +151,18 @@ function displayResultsDetails() {
 
   let backdropsList = '';
   let backdropsUrl = ''; 
-  for (let i = 0; i < STORE.films[STORE.filmIndexClicked].backdrops.length; i++) {
+  let backdropsCount = STORE.films[STORE.filmIndexClicked].backdrops.length > 15 ? 15 : STORE.films[STORE.filmIndexClicked].backdrops.length;
+
+  for (let i = 0; i < backdropsCount; i++) {
     backdropsUrl = STORE.theMovieDBImageBase_url + STORE.theMovieDBImageBackdrop_size + STORE.films[STORE.filmIndexClicked].backdrops[i].file_path;
     backdropsList += `<div><img class="details-backdrop-img" src=${backdropsUrl} alt='${STORE.films[STORE.filmIndexClicked].title} - Backdrop image' /></div>`;
   }
 
   let postersList = '';
-  let postersUrl = ''
-  for (let i = 0; i < STORE.films[STORE.filmIndexClicked].posters.length; i++) {
+  let postersUrl = '';
+  let postersCount = STORE.films[STORE.filmIndexClicked].posters.length > 15 ? 15 : STORE.films[STORE.filmIndexClicked].posters.length;
+
+  for (let i = 0; i < postersCount; i++) {
     postersUrl = STORE.theMovieDBImageBase_url + STORE.theMovieDBImageBackdrop_size + STORE.films[STORE.filmIndexClicked].posters[i].file_path
     postersList += `<div><img class="details-posters-img" src=${postersUrl} alt='${STORE.films[STORE.filmIndexClicked].title} - Poster Image' /></div>`;
   }
@@ -172,7 +180,7 @@ function displayResultsDetails() {
             <p><span class="header">Release Date: </span>${STORE.films[STORE.filmIndexClicked].release_date}</p>
             <p><span class="header">Original Title: </span>${STORE.films[STORE.filmIndexClicked].original_title}</p>
             <p><span class="header">Rotten Tomatoes Score: </span>${STORE.films[STORE.filmIndexClicked].rt_score}</p>
-            <button class="back-button" type="button" onClick="window.location.reload();">Back to Film List</button>
+            <button class="back-button" type="button" onClick="window.location.reload();">Back to Films List</button>
           </div>
         </li>
       </ul>
@@ -187,12 +195,12 @@ function displayResultsDetails() {
   `);  
   
   let film_roll = new FilmRoll({
-    configure_load: true,
+    configure_load: 1000,
     container: '.details-backdrops'
   });
 
   let film_roll2 = new FilmRoll({
-    configure_load: true,
+    configure_load: 1000,
     container: '.details-posters'
   });
 

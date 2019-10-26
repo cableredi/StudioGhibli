@@ -81,8 +81,17 @@
     border: 1px solid $black;
   }
 
+  .details-information {
+    margin: 0 10px;
+  }
+
   .details-information h2 {
     font-size: 20px;
     line-height: 25px;
   }
+
+  .details-top {
+    flex-direction: column;
+  }
+
 }

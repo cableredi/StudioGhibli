@@ -1,3 +1,16 @@
-Welcome to the World of Studio Ghibili.
+# Welcome to the World of Studio Ghibili.
 
-Here you will be able to view the beautiful artwork and posters and a little about each of the Studio Ghibli films.
+## Summary
+StudioGhibli shows you the world of the Studio Ghibli films.  See about each film and the beautiful artwork and posters created for each film.
+
+## View
+[Live View](https://cableredi.github.io/StudioGhibli/)
+
+## Screenshots
+### Landing Page:
+
+### Film Details Page:
+
+## Built With
+HTML, SASS, JavaScript, JQuery
+
