@@ -4,7 +4,6 @@
  * Format API parameters for call
  *****************/
 function formatQueryParams(params) {
-  console.log('Entering formatQueryParams');
 
   const queryItems = Object.keys(params)
     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
@@ -15,7 +14,6 @@ function formatQueryParams(params) {
  * Build STORE films with Studio Ghibli API film responses
  *****************/
 function buildStoreGhibliFilm(responseJson) {
-  console.log('Entering buildStoreGhibliFilm');
 
   for (let i = 0; i < responseJson.length; i++) {
     let film = {
@@ -38,7 +36,6 @@ function buildStoreGhibliFilm(responseJson) {
  * Build STORE films with Movie DB API film responses
  *****************/
 function buildStoreMovieDb(responseJson) {
-  console.log('Entering buildStoreMovieDb');
 
   for (let i = 0; i < responseJson.results.length; i++) {
     let result = STORE.films.findIndex(p => 
@@ -69,7 +66,6 @@ function buildStoreMovieDb(responseJson) {
  * Build STORE films with Movie DB API individual film responses
  *****************/
 function buildStoreMovieDbDetails(responseJson) {
-  console.log('Entering buildStoreMovieDbDetails');
 
   let backdrop = '';
   let poster = '';
@@ -103,7 +99,6 @@ function buildStoreMovieDbDetails(responseJson) {
  * Display Home Page
  *****************/
 function displayResultsHome() {
-  console.log('Entering displayResultsHome');
 
   $('#js-films').empty();
 
@@ -136,7 +131,6 @@ function displayResultsHome() {
  * Display Details Page
  *****************/
 function displayResultsDetails() {
-  console.log('Entering displayResultsDetails');
 
   $('#js-film-details').empty();
   $('#js-films').toggle();
@@ -212,11 +206,8 @@ function displayResultsDetails() {
  * Handle user clicking More info button on Home Page
  *****************/
 function handleMoreInfoClicked() {
-  console.log('Entering handleMoreInfoClicked');
 
   $('#js-films').on('click', '.js-moreInfo-button', event => {
-    console.log('Clicked More Info');
-
     STORE.filmIndexClicked = STORE.films.findIndex(p => p.id === event.target.id)
 
     getMovieDbFilmDetails();
@@ -227,7 +218,6 @@ function handleMoreInfoClicked() {
  * Studio Ghibili Films API
  *****************/
 function getStudioGhibliFilms() {
-  console.log('Entering getStudioGhibiliFilms');
 
   const url = STORE.studioGhibliApi + '/films';
 
@@ -248,7 +238,6 @@ function getStudioGhibliFilms() {
  * The Movie DB get all Films with Title API
  *****************/
 function getMovieDbFilms() {
-  console.log('Entering getMovieDbFilms');
 
   for (let i = 0; i < STORE.films.length; i++) {
     let title = STORE.films[i].title.split(' ').join('+');
@@ -279,7 +268,7 @@ function getMovieDbFilms() {
  * The Movie DB get Film Title Detail information
  *****************/
 function getMovieDbFilmDetails() {
-  console.log('Entering getMovieDbFilmDetails');
+
     const movieDbId = STORE.films[STORE.filmIndexClicked].movieDbId;
 
     let params =  {
@@ -309,7 +298,6 @@ function getMovieDbFilmDetails() {
  * Initial Loading of Page
  *****************/
 function loadPage() {
-  console.log('Entering loadPage');
 
   /* get current year for footer */
   document.getElementById("year").innerHTML = new Date().getFullYear();
