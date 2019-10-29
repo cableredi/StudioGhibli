@@ -135,6 +135,7 @@ function displayResultsDetails() {
   $('#js-film-details').empty();
   $('#js-films').toggle();
   $('#js-film-details').toggle();
+  $('.summary').toggle();
 
   let imageURL = '<div><i class="far fa-image"></i></div>';
 

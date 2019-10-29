@@ -1,7 +1,7 @@
 # Welcome to the World of Studio Ghibli.
 
 ## Summary
-StudioGhibli shows you the world of the Studio Ghibli films.  See about each film and the beautiful artwork and posters created for each film.
+StudioGhibli shows you the world of the Studio Ghibli films.  See about each film and the beautiful artwork and posters created for each one.
 
 ## View
 [Live View](https://cableredi.github.io/StudioGhibli/)

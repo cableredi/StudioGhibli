@@ -39,10 +39,6 @@ h2 {
 }
 
 /* header */
-header {
-  border-bottom: 2px solid #000;
-}
-
 header h1 {
   text-align: right;
 }
@@ -192,6 +188,24 @@ button:hover {
   -ms-border-radius: 4px;
 }
 
+.summary {
+  border: 1px solid #000;
+  background-color: darkslateblue;
+  padding: 20px;
+  margin: 20px 100px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+}
+
+.summary p {
+  margin: 20px 0;
+  text-align: center;
+  color: #ced4da;
+  font-size: 24px;
+}
+
 @media only screen and (max-width: 750px) {
   .films img {
     height: 50%;
@@ -207,6 +221,12 @@ button:hover {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
+  }
+  .summary {
+    margin: 10px 30px;
+  }
+  .summary p {
+    font-size: 18px;
   }
 }
 
