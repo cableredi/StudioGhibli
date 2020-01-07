@@ -191,7 +191,7 @@ button:hover {
 .summary {
   border: 1px solid #000;
   background-color: darkslateblue;
-  padding: 20px;
+  padding: 15px 20px;
   margin: 20px 100px;
   border-radius: 4px;
   -webkit-border-radius: 4px;
@@ -200,7 +200,7 @@ button:hover {
 }
 
 .summary p {
-  margin: 20px 0;
+  margin: 10px 0;
   text-align: center;
   color: #ced4da;
   font-size: 24px;
